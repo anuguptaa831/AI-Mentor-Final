@@ -1,0 +1,63 @@
+
+.glass {
+    background: rgba(15, 23, 42, 0.6) !important; /* Deep Navy Glass Effect */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+#chat-box::-webkit-scrollbar {
+    width: 4px; 
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background: #2563eb; /* Blue color scrollbar */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+/* Message Animation */
+.message-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+/* Message Animation */
+.message-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+.loading-pulse { 
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
+}
