@@ -120,3 +120,38 @@ if (SpeechRecognition) {
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault();
 });
+
+// Navigation Elements
+const navChat = document.getElementById('nav-chat');
+const navBooks = document.getElementById('nav-books');
+const navSettings = document.getElementById('nav-settings');
+
+// Section Containers
+const chatSection = document.getElementById('chat-section');
+const booksSection = document.getElementById('books-section');
+const settingsSection = document.getElementById('settings-section');
+const sectionTitle = document.getElementById('section-title');
+
+function switchTab(activeSection, title) {
+    // Sabko chhupao
+    chatSection.classList.add('hidden');
+    booksSection.classList.add('hidden');
+    settingsSection.classList.add('hidden');
+    
+    // Sirf active ko dikhao
+    activeSection.classList.remove('hidden');
+    sectionTitle.innerText = title;
+}
+
+// Click Events
+navChat.addEventListener('click', () => switchTab(chatSection, 'AI Mentor Pro'));
+navBooks.addEventListener('click', () => switchTab(booksSection, 'Course Library'));
+navSettings.addEventListener('click', () => switchTab(settingsSection, 'Profile Settings'));
+
+document.querySelectorAll('button').forEach(btn => {
+    if (btn.innerText.includes("CONTINUE") || btn.innerText.includes("REVIEW")) {
+        btn.addEventListener('click', () => {
+            switchTab(chatSection, 'AI Mentor Pro', navChat);
+        });
+    }
+});
