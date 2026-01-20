@@ -61,3 +61,31 @@
 .loading-pulse { 
     animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
 }
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; 
+    }
+
+    .sidebar {
+        width: 100%; /* Sidebar width */
+        height: auto;
+        padding: 10px;
+        flex-direction: row; 
+        justify-content: space-around;
+    }
+
+    .main-content {
+        padding: 10px;
+        width: 100%;
+    }
+
+    .learning-progress {
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    .chat-container {
+        height: 60vh;
+    }
+}
