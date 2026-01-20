@@ -11,74 +11,72 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-[#0f172a] text-slate-200 h-screen flex overflow-hidden font-sans">
-<div class="flex flex-col md:flex-row h-screen overflow-hidden">
-    
-    <aside class="w-full md:w-20 lg:w-24 bg-[#0f172a] flex flex-row md:flex-col items-center py-4 md:py-8 border-b md:border-r border-slate-800 justify-around md:justify-start md:space-y-8 z-10">
-        <div class="p-2 bg-blue-600 rounded-2xl shadow-lg shadow-blue-500/20">
-            <i data-lucide="bot" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
-        </div>
-        <nav class="flex flex-row md:flex-col gap-6 md:gap-8 opacity-60">
-            <i data-lucide="layout-dashboard" class="w-6 h-6 cursor-pointer hover:text-blue-400 transition-all"></i>
-            <i data-lucide="book-open" class="w-6 h-6 cursor-pointer hover:text-blue-400 transition-all"></i>
-            <i data-lucide="settings" class="w-6 h-6 cursor-pointer hover:text-blue-400 transition-all"></i>
-        </nav>
-    </aside>
+<body class="bg-[#0f172a] text-slate-200 h-screen font-sans overflow-hidden">
 
-    <main class="flex-1 flex flex-col bg-[#0f172a] relative overflow-hidden">
-        <header class="h-16 md:h-20 border-b border-slate-800 flex items-center justify-between px-4 md:px-8 backdrop-blur-md">
-            <div>
-                <h1 class="text-lg md:text-xl font-bold">AI Mentor Pro</h1>
-                <p class="text-[10px] text-blue-400 uppercase tracking-widest">Active Learning Session</p>
+    <div class="flex flex-col md:flex-row h-full w-full overflow-hidden">
+        
+        <aside class="w-full md:w-20 lg:w-24 bg-[#1e293b] flex flex-row md:flex-col items-center py-3 md:py-8 border-b md:border-r border-slate-700 justify-around md:justify-start md:space-y-8 z-20">
+            <div class="p-2 bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20">
+                <i data-lucide="bot" class="w-6 h-6 md:w-8 md:h-8 text-white"></i>
             </div>
-        </header>
-
-        <div id="chat-box" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
-            </div>
-
-        <footer class="p-4 md:p-6 shrink-0">
-            <div class="max-w-4xl mx-auto flex gap-2 md:gap-4 items-center bg-slate-800/40 border border-slate-700 p-2 rounded-2xl">
-                <input type="text" id="user-input" placeholder="Ask your question here..." class="flex-1 bg-transparent border-none outline-none text-slate-200 px-2 md:px-4 py-2 text-sm md:text-base">
-                <button id="mic-btn" class="p-2 text-slate-400 hover:text-blue-400 transition-all">
-                    <i data-lucide="mic" class="w-5 h-5 md:w-6 md:h-6"></i>
-                </button>
-                <button id="send-btn" class="bg-blue-600 hover:bg-blue-500 p-2 md:p-3 rounded-xl transition-all active:scale-95">
-                    <i data-lucide="send" class="w-5 h-5 text-white"></i>
-                </button>
-            </div>
-        </footer>
-    </main>
-
-    <aside class="hidden xl:block w-80 border-l border-slate-800 p-6">
-        <h3 class="text-lg font-semibold mb-6">Learning Progress</h3>
+            <nav class="flex flex-row md:flex-col gap-8 md:gap-10 opacity-60">
+                <i data-lucide="layout-dashboard" class="w-6 h-6 cursor-pointer hover:text-blue-400 transition-all"></i>
+                <i data-lucide="book-open" class="w-6 h-6 cursor-pointer hover:text-blue-400 transition-all"></i>
+                <i data-lucide="settings" class="w-6 h-6 cursor-pointer hover:text-blue-400 transition-all"></i>
+            </nav>
         </aside>
-</div>
 
-    <aside class="w-72 border-l border-slate-800 bg-[#0f172a]/50 p-8 flex flex-col shrink-0">
-        <h3 class="text-lg font-semibold mb-6">Learning Progress</h3>
+        <main class="flex-1 flex flex-col bg-[#0f172a] relative overflow-hidden min-w-0">
+            <header class="h-16 md:h-20 border-b border-slate-800 flex items-center justify-between px-4 md:px-8 backdrop-blur-md">
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold">AI Mentor Pro</h1>
+                    <p class="text-[10px] text-blue-400 uppercase tracking-widest">Active Learning Session</p>
+                </div>
+            </header>
 
-        <div class="glass p-5 rounded-3xl border border-white/5 mb-6">
-            <div class="flex justify-between text-xs mb-2">
-                <span class="text-slate-400">Java Basics</span>
-                <span class="text-blue-400 font-bold">70%</span>
-            </div>
-            <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-blue-500 h-full w-[70%] shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
-            </div>
-        </div>
+            <div id="chat-box" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+                </div>
 
-        <div class="space-y-4">
-            <h4 class="text-[10px] uppercase text-slate-500 tracking-widest font-bold">Upcoming</h4>
-            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 text-sm opacity-50 border border-transparent">
-                <i data-lucide="lock" class="w-4 h-4"></i> API Integration
+            <footer class="p-4 md:p-6 shrink-0 bg-[#0f172a]">
+                <div class="max-w-4xl mx-auto flex gap-2 md:gap-4 items-center bg-slate-800/40 border border-slate-700 p-2 rounded-2xl">
+                    <input type="text" id="user-input" placeholder="Ask your question here..." class="flex-1 bg-transparent border-none outline-none text-slate-200 px-2 md:px-4 py-2 text-sm md:text-base">
+                    <button id="mic-btn" class="p-2 text-slate-400 hover:text-blue-400 transition-all">
+                        <i data-lucide="mic" class="w-5 h-5 md:w-6 md:h-6"></i>
+                    </button>
+                    <button id="send-btn" class="bg-blue-600 hover:bg-blue-500 p-2 md:p-3 rounded-xl transition-all active:scale-95">
+                        <i data-lucide="send" class="w-5 h-5 text-white"></i>
+                    </button>
+                </div>
+            </footer>
+        </main>
+
+        <aside class="w-full md:w-72 lg:w-80 border-t md:border-t-0 md:border-l border-slate-800 bg-[#0f172a]/50 p-6 flex flex-col shrink-0 overflow-y-auto max-h-[40vh] md:max-h-full">
+            <h3 class="text-lg font-semibold mb-6">Learning Progress</h3>
+
+            <div class="bg-white/5 p-5 rounded-3xl border border-white/5 mb-6">
+                <div class="flex justify-between text-xs mb-2">
+                    <span class="text-slate-400">Java Basics</span>
+                    <span class="text-blue-400 font-bold">70%</span>
+                </div>
+                <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-blue-500 h-full w-[70%] shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                </div>
             </div>
-            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 text-sm opacity-50 border border-transparent">
-                <i data-lucide="lock" class="w-4 h-4"></i> Final Project
+
+            <div class="space-y-4">
+                <h4 class="text-[10px] uppercase text-slate-500 tracking-widest font-bold">Upcoming</h4>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 text-sm opacity-50 border border-transparent">
+                    <i data-lucide="lock" class="w-4 h-4"></i> API Intigration
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 text-sm opacity-50 border border-transparent">
+                    <i data-lucide="lock" class="w-4 h-4"></i> Final Project
+                </div>
             </div>
-        </div>
-    </aside>
-    <script>1
-        //icons initialization
+        </aside>
+    </div>
+
+    <script>
+        // Icons initialization
         lucide.createIcons();
     </script>
     <script src="script.js"></script>
