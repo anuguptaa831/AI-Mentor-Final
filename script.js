@@ -4,76 +4,91 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 const micBtn = document.getElementById('mic-btn');
 
-// Auth, Nav & Theme Elements
 const authOverlay = document.getElementById('auth-overlay');
 const loginBtn = document.getElementById('login-btn');
-const themeToggle = document.getElementById('theme-toggle'); // Theme toggle selection
-const htmlElement = document.documentElement; // HTML tag selection for class-based dark mode
+const themeToggle = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
 
 const navChat = document.getElementById('nav-chat');
 const navBooks = document.getElementById('nav-books');
 const navSettings = document.getElementById('nav-settings');
 
-// Sections
 const chatSection = document.getElementById('chat-section');
 const booksSection = document.getElementById('books-section');
 const settingsSection = document.getElementById('settings-section');
 const sectionTitle = document.getElementById('section-title');
 
+const muteToggle = document.getElementById('mute-toggle');
+const muteIcon = document.getElementById('mute-icon');
+let isMuted = false; // Default awaaz on rahegi
+
 // --- 2. AUTH, NAVIGATION & THEME LOGIC ---
 
-// Login logic: Overlay ko hide karne ke liye
 if (loginBtn) {
     loginBtn.addEventListener('click', () => {
         authOverlay.style.opacity = '0';
-        authOverlay.style.transition = 'opacity 0.5s ease';
+        authOverlay.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
         setTimeout(() => {
             authOverlay.style.display = 'none';
-        }, 500);
+        }, 600);
     });
 }
 
-// Dark/Light Mode Switcher Logic
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         if (htmlElement.classList.contains('dark')) {
-            htmlElement.classList.remove('dark'); // Light mode enable karein
-            localStorage.setItem('theme', 'light'); // Preference save karein
+            htmlElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
         } else {
-            htmlElement.classList.add('dark'); // Dark mode enable karein
-            localStorage.setItem('theme', 'dark'); // Preference save karein
+            htmlElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
         }
     });
 }
 
-// Tab Switching Function
 function switchTab(activeSection, title, activeIcon) {
-    // Sabhi sections chhupayein
-    chatSection.classList.add('hidden');
-    booksSection.classList.add('hidden');
-    settingsSection.classList.add('hidden');
-    
-    // Sirf active section dikhayein
+    [chatSection, booksSection, settingsSection].forEach(s => s.classList.add('hidden'));
     activeSection.classList.remove('hidden');
     sectionTitle.innerText = title;
 
-    // Icons ki styling update karein (Active state support for both modes)
     [navChat, navBooks, navSettings].forEach(icon => {
-        icon.classList.remove('text-blue-600', 'text-blue-400');
+        icon.classList.remove('text-blue-600', 'dark:text-blue-400');
         icon.parentElement.classList.add('opacity-60');
     });
+
     activeIcon.classList.add('text-blue-600', 'dark:text-blue-400');
     activeIcon.parentElement.classList.remove('opacity-60');
 }
 
-// Navigation Events
 navChat.addEventListener('click', () => switchTab(chatSection, 'AI Mentor Pro', navChat));
 navBooks.addEventListener('click', () => switchTab(booksSection, 'Learning Library', navBooks));
 navSettings.addEventListener('click', () => switchTab(settingsSection, 'Profile Settings', navSettings));
 
-// --- 3. CHAT FUNCTIONALITY ---
+// --- 3. VOICE LOGIC ---
+function speak(text) {
+    window.speechSynthesis.cancel(); // Stop any current speech
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    let voices = window.speechSynthesis.getVoices();
+    const setVoice = () => {
+        voices = window.speechSynthesis.getVoices();
+        // Try to find a premium female voice
+        utterance.voice = voices.find(v => v.name.includes('Google US English')) || 
+                         voices.find(v => v.lang.includes('en-US')) || 
+                         voices[0];
+        window.speechSynthesis.speak(utterance);
+    };
 
-function typeWriter(text, element, speed = 10) {
+    if (voices.length === 0) {
+        window.speechSynthesis.onvoiceschanged = setVoice;
+    } else {
+        setVoice();
+    }
+}
+
+// --- 4. CHAT FUNCTIONALITY ---
+
+function typeWriter(text, element, speed = 15) {
     let i = 0;
     const parsedHTML = marked.parse(text); 
     element.innerHTML = ""; 
@@ -82,10 +97,12 @@ function typeWriter(text, element, speed = 10) {
         if (i < parsedHTML.length) {
             element.innerHTML = parsedHTML.substring(0, i + 1);
             i++;
-            setTimeout(type, speed);
+            let dynamicSpeed = Math.random() * speed + 5; 
+            setTimeout(type, dynamicSpeed);
             chatBox.scrollTop = chatBox.scrollHeight;
         } else {
             element.innerHTML = parsedHTML; 
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
     }
     type();
@@ -93,14 +110,14 @@ function typeWriter(text, element, speed = 10) {
 
 function appendMessage(role, text) {
     const msgDiv = document.createElement('div');
-    msgDiv.className = `flex ${role === 'user' ? 'justify-end' : 'gap-4'} max-w-full mb-4`;
-    
-    msgDiv.innerHTML = role === 'user' 
-        ? `<div class="bg-blue-600 p-4 rounded-2xl rounded-tr-none text-sm max-w-[80%] shadow-lg text-white">${text}</div>`
+    msgDiv.className = `flex ${role === 'user' ? 'justify-end' : 'gap-4'} max-w-full mb-6 animate-in fade-in slide-in-from-bottom-2 duration-500`;
+
+    msgDiv.innerHTML = role === 'user'
+        ? `<div class="bg-blue-600 p-4 rounded-[1.5rem] rounded-tr-none text-sm max-w-[80%] shadow-lg text-white font-medium">${text}</div>`
         : `<div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/20">
             <i data-lucide="bot" class="w-6 h-6 text-white"></i>
            </div>
-           <div class="bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl rounded-tl-none glass text-sm max-w-[80%] text-slate-900 dark:text-slate-200">${text}</div>`;
+           <div class="bg-white/80 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 p-5 rounded-[2rem] rounded-tl-none glass text-sm max-w-[80%] text-slate-900 dark:text-slate-200 backdrop-blur-md">${text}</div>`;
 
     chatBox.appendChild(msgDiv);
     lucide.createIcons();
@@ -115,11 +132,8 @@ async function sendMessage() {
     appendMessage('user', userText);
     userInput.value = '';
 
-    const loadingId = 'loading-' + Date.now();
     const loadingDiv = document.createElement('div');
-    loadingDiv.id = loadingId;
     loadingDiv.className = "flex gap-4 max-w-3xl mb-4";
-    
     loadingDiv.innerHTML = `
         <div class="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-700 flex items-center justify-center shrink-0">
             <i data-lucide="bot" class="w-5 h-5 text-blue-600 dark:text-blue-400 animate-pulse"></i>
@@ -138,43 +152,37 @@ async function sendMessage() {
             body: JSON.stringify({ message: userText })
         });
         const data = await response.json();
-        loadingDiv.remove(); 
-        
-        const aiBubble = appendMessage('ai', ''); 
-        typeWriter(data.reply, aiBubble); 
+        loadingDiv.remove();
+
+        const aiBubble = appendMessage('ai', '');
+        typeWriter(data.reply, aiBubble);
+        speak(data.reply); // Voice response
 
     } catch (error) {
-        loadingDiv.innerHTML = `
-            <div class="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center shrink-0">
-                <i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i>
-            </div>
-            <div class="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-500/20 p-4 rounded-2xl rounded-tl-none text-sm text-red-600 dark:text-red-400">
-                Error: Server didn't connect.
-            </div>`;
+        loadingDiv.innerHTML = `<div class="text-red-500 text-sm p-4">Error: Server not connected.</div>`;
         lucide.createIcons();
     }
 }
 
-// --- 4. INITIALIZATION & LISTENERS ---
+// --- 5. INITIALIZATION & LISTENERS ---
 
-// Page load par theme apply karein
 window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
         htmlElement.classList.remove('dark');
     } else {
-        htmlElement.classList.add('dark'); // Default dark mode rakhein
+        htmlElement.classList.add('dark');
     }
+    lucide.createIcons();
 });
 
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-// Voice Recognition
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (SpeechRecognition) {
     const recognition = new SpeechRecognition();
-    recognition.lang = 'en-US'; 
+    recognition.lang = 'en-US';
     micBtn.addEventListener('click', () => {
         recognition.start();
         micBtn.classList.add('text-red-500', 'animate-pulse');
@@ -185,8 +193,25 @@ if (SpeechRecognition) {
         sendMessage();
     };
     recognition.onerror = () => micBtn.classList.remove('text-red-500', 'animate-pulse');
-} else {
-    micBtn.style.display = 'none'; 
 }
 
 window.addEventListener('contextmenu', (e) => e.preventDefault());
+
+document.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.tagName === 'BUTTON' && (target.innerText.includes("REVIEW") || target.innerText.includes("CONTINUE"))) {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#2563eb', '#9333ea', '#10b981']
+        });
+
+        setTimeout(() => {
+            switchTab(chatSection, 'AI Mentor Pro', navChat);
+            userInput.value = `I want to review ${target.closest('.group').querySelector('h3').innerText}`;
+            sendMessage();
+        }, 800);
+    }
+});
+
